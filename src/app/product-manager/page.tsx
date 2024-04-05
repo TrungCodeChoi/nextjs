@@ -4,7 +4,6 @@ import { Table, TableProps } from "antd";
 import axios from "axios";
 import Link from "next/link";
 
-
 function Page({}) {
   const [data, setData] = useState();
   // console.log(data);
@@ -20,16 +19,18 @@ function Page({}) {
     };
     fetchData();
   }, []);
-  const deleteProduct = async (productId) => {
+  const deleteProduct = async (productId: any) => {
     try {
-      const response = await axios.get(
-        `http://20.2.70.141:5000/api/v1/products/${productId}`
+      const response = await axios.delete(
+        `http://20.2.70.141:5000/api/v1/products/delete/${productId}`
       );
-      console.log(response.data);
+      setData((updateData: any) => updateData.filter((item: any) => item._id !== productId));
     } catch (error) {
       console.error("Error deleting product:", error);
     }
+    
   };
+  type DataType = any;
   const columns: TableProps<DataType>["columns"] = [
     {
       title: "Ảnh sản phẩm",
@@ -89,9 +90,7 @@ function Page({}) {
           <button className="mx-[10px]">
             <Link href="/product-edit">Sửa</Link>
           </button>
-          <button type="submit" onClick={deleteProduct(item._id)}>
-            Xóa
-          </button>
+          <button onClick={() => deleteProduct(item._id)}>Xóa</button>
         </div>
       ),
     },

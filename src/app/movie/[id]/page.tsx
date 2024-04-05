@@ -4,16 +4,13 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 
 export default function Page({ params }: { params: { id: string } }) {
-  // Tạo state chứa data
-  const [data, setData] = useState();
-  console.log(data);
-  const [cast, setCast] = useState();
-  // console.log(cast?.cast);
-  const [review, setReview] = useState();
-  const [trailer, setTrailer] = useState();
-  console.log(trailer?.results[0].key);
+  const [data, setData] = useState<any>();
 
-  // console.log(review);
+  const [cast, setCast] = useState<any>();
+
+  const [review, setReview] = useState<any>();
+  const [trailer, setTrailer] = useState<any>();
+
   const [active, setActive] = useState("overview");
   const onHandleOverview = () => {
     setActive("overview");
@@ -86,7 +83,9 @@ export default function Page({ params }: { params: { id: string } }) {
               {cast?.cast &&
                 cast?.cast
                   ?.slice(0, 8)
-                  .map((item) => <h1>Dien vien : {item.name}</h1>)}
+                  .map((item: any, index: any) => (
+                    <h1 key={index}>Dien vien : {item.name}</h1>
+                  ))}
             </div>
           )}
 
@@ -94,8 +93,8 @@ export default function Page({ params }: { params: { id: string } }) {
           {active === "review" && (
             <div>
               {review?.results &&
-                review?.results?.map((item) => (
-                  <div>
+                review?.results?.map((item: any, index: any) => (
+                  <div key={index}>
                     <p>{item.author}</p>
                     <p>{item.content}</p>
                   </div>
@@ -108,7 +107,9 @@ export default function Page({ params }: { params: { id: string } }) {
           {trailer?.results &&
             trailer?.results
               .slice(0, 2)
-              .map((item) => <TrailerModal videoId={item.key} />)}
+              .map((item: any, index: any) => (
+                <TrailerModal key={index} videoId={item.key} />
+              ))}
         </div>
       </div>
     </div>

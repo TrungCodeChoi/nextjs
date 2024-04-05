@@ -7,7 +7,7 @@ import TrailerModal from "@/components/TrailerModal";
 
 export default function Page() {
   // Tạo state chứa data
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<any>([]);
   // Tạo state lưu page
   const [current, setCurrentPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -22,8 +22,8 @@ export default function Page() {
         console.log(data);
       });
   }, [current]); // đem page bỏ dependency
-
-  const onChange: PaginationProps["onChange"] = (page) => {
+type PaginationProps = any;
+  const onChange: PaginationProps["onChange"] = (page: number) => {
     console.log(page);
     setCurrentPage(page);
   };
@@ -41,12 +41,11 @@ export default function Page() {
 
   return (
     <div>
-      <div className="bg-red-500 h-[5vh]">
-      </div>
+      <div className="bg-red-500 h-[5vh]"></div>
       <div className="container mx-auto">
         <div className="grid grid-cols-5">
           {/* Render cục này */}
-          {data?.results?.map((movie, index) => (
+          {data?.results?.map((movie: any, index: number) => (
             <div key={index} className="border border-red-100 p-2 rounded-lg">
               <Link href={`/movie/${movie?.id}`}>
                 <img

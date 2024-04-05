@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Button, Modal } from "antd";
 
-const TrailerModal: React.FC = ({ videoId }) => {
+const TrailerModal = ({ videoId }:any) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const showModal = () => {

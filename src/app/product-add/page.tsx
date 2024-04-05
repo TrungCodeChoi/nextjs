@@ -6,7 +6,6 @@ import { useFormik } from "formik";
 import axios from "axios";
 import Link from "next/link";
 import { UploadOutlined } from "@ant-design/icons";
-import type { UploadProps } from "antd";
 
 function Page() {
   const [data, setData] = useState();
@@ -48,7 +47,6 @@ function Page() {
         );
         console.log("Data sent successfully:", response.data);
         message.success("Thêm sản phẩm thành công");
-        // <Link href="/product-manager">Dashboard</Link>;
       } catch (error) {
         console.error("Error adding product:", error);
         message.error("Thêm sản phẩm thất bại. Vui lòng thử lại sau.");
@@ -63,7 +61,7 @@ function Page() {
     headers: {
       authorization: "authorization-text",
     },
-    onChange(info) {
+    onChange(info: any) {
       if (info.file.status === "done") {
         message.success(`${info.file.name} file uploaded successfully`);
         const imageUrl = info.file.response.url;
@@ -138,21 +136,12 @@ function Page() {
                 placeholder="Chọn danh mục"
                 onChange={(value) => formik.setFieldValue("category", value)}
               >
-                {categories.map((category) => (
+                {categories.map((category: any) => (
                   <Select.Option key={category._id} value={category._id}>
                     {category.name}
                   </Select.Option>
                 ))}
               </Select>
-              {/* <select
-                id="category"
-                name="category"
-                className="border border-gray-300 rounded outline-none"
-              >
-                <option value="">Chọn danh mục</option>
-                <option value="DM 1">DM 1</option>
-                <option value="DM 2">DM 2</option>
-              </select> */}
             </div>
             <div className="mt-[10px]">
               <label htmlFor="description">Mô tả</label>
@@ -162,7 +151,6 @@ function Page() {
                 name="description"
                 onChange={formik.handleChange}
                 value={formik.values.description}
-                type="text"
                 placeholder="Mô tả"
               />
             </div>
@@ -170,7 +158,6 @@ function Page() {
           <div>
             <button
               onChange={formik.handleChange}
-              value={formik.values}
               type="submit"
               className="p-3 bg-[#28a745] w-48 rounded mt-3 text-white text-center mr-5"
             >
