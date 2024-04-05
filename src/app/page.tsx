@@ -41,7 +41,9 @@ type PaginationProps = any;
 
   return (
     <div>
-      <div className="bg-red-500 h-[5vh]"></div>
+      <div className="bg-red-500 h-[5vh]">
+        <Link href={`/product-manager`}>Admin</Link>
+      </div>
       <div className="container mx-auto">
         <div className="grid grid-cols-5">
           {/* Render cục này */}
