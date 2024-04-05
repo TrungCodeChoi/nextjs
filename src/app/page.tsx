@@ -42,6 +42,7 @@ type PaginationProps = any;
   return (
     <div>
       <div className="bg-red-500 h-[5vh]">
+        <h1>aaa</h1>
         <Link href={`/product-manager`}>Admin</Link>
       </div>
       <div className="container mx-auto">
