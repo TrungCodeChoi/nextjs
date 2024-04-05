@@ -22,7 +22,7 @@ export default function Page() {
         console.log(data);
       });
   }, [current]); // đem page bỏ dependency
-type PaginationProps = any;
+  type PaginationProps = any;
   const onChange: PaginationProps["onChange"] = (page: number) => {
     console.log(page);
     setCurrentPage(page);
@@ -41,8 +41,7 @@ type PaginationProps = any;
 
   return (
     <div>
-      <div className="bg-red-500 h-[5vh]">
-        <h1>aaa</h1>
+      <div className="bg-red-500 h-[5vh] text-center items-center">
         <Link href={`/product-manager`}>Admin</Link>
       </div>
       <div className="container mx-auto">

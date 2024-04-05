@@ -7,29 +7,45 @@ import axios from "axios";
 import Link from "next/link";
 import { UploadOutlined } from "@ant-design/icons";
 import type { UploadProps } from "antd";
-
+import { useParams } from "next/navigation";
 function Page() {
-  const [data, setData] = useState();
+const { productId } = useParams();
+  const [data, setData] = useState<any>();
   const [categories, setCategories] = useState([]);
-  console.log(data);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const productData = await axios.get(
-          `http://20.2.70.141:5000/api/v1/products`
+          `https://www.warriorcode.online/api/v1/products`
         );
         setData(productData?.data?.data);
+        // console.log(productData?.data?.data);
+
         const categoryData = await axios.get(
-          `http://20.2.70.141:5000/api/v1/categories`
+          `https://www.warriorcode.online/api/v1/categories`
         );
         setCategories(categoryData?.data?.data);
       } catch (error) {
-        console.log("Error fetching data:", error);
+        console.log("Lỗi khi lấy dữ liệu:", error);
       }
     };
     fetchData();
   }, []);
+
+  
+  const getOneProduct = async (productId: any) => {
+    try {
+      const response = await axios.get(
+        `https://www.warriorcode.online/api/v1/products/${productId}`
+      );
+      console.log(response?.data?.data);
+      
+    } catch (error) {
+      console.error("Error updating product:", error);
+    }
+  };
+
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -40,36 +56,48 @@ function Page() {
       category: "",
       description: "",
     },
-    onSubmit: async (values) => {
+    onSubmit: async (values, productId) => {
       try {
-        const response = await axios.post(
-          `http://20.2.70.141:5000/api/v1/products/create`,
-          values
+        const response = await axios.put(
+          `https://www.warriorcode.online/api/v1/products/update/${productId}`
         );
-        console.log("Data sent successfully:", response.data);
-        message.success("Thêm sản phẩm thành công");
-        // <Link href="/product-manager">Dashboard</Link>;
+        console.log(response);
+        console.log("Dữ liệu đã gửi thành công:", response.data);
+        message.success("Cập nhật sản phẩm thành công");
       } catch (error) {
-        console.error("Error adding product:", error);
-        message.error("Thêm sản phẩm thất bại. Vui lòng thử lại sau.");
+        console.error("Lỗi khi cập nhật sản phẩm:", error);
+        message.error("Cập nhật sản phẩm thất bại. Vui lòng thử lại sau.");
       }
     },
   });
+
   const { setFieldValue } = formik;
+  useEffect(() => {
+    if (productId) {
+      console.log(getOneProduct(productId)); 
+    }
+  }, [productId]);
+  // useEffect(() => {
+  //   if (data && data.length > 0) {
+  //     setFieldValue("name", getOneProduct?.data?.data?.name);
+  //   }
+  // }, [data]);
+
+  // console.log(data?.data);
 
   const image = {
     name: "image",
-    action: "http://20.2.70.141:5000/api/v1/upload/file",
+    action: "https://www.warriorcode.online/api/v1/upload/file",
     headers: {
       authorization: "authorization-text",
     },
     onChange(info: any) {
       if (info.file.status === "done") {
-        message.success(`${info.file.name} file uploaded successfully`);
+        message.success(`${info.file.name} tải lên thành công`);
         const imageUrl = info.file.response.url;
         formik.setFieldValue("image", [...formik.values.image, imageUrl]);
       } else if (info.file.status === "error") {
-        message.error(`${info.file.name} file upload failed.`);
+        message.error(`${info.file.name} tải lên thất bại.`);
       }
     },
   };
@@ -77,9 +105,7 @@ function Page() {
   return (
     <div className="mx-auto container h-[100vh] bg-[white]">
       <div className="px-[20px]">
-        <h1 className="font-medium text-center text-base pt-5">
-          Sửa sản phẩm
-        </h1>
+        <h1 className="font-medium text-center text-base pt-5">Sửa sản phẩm</h1>
         <form onSubmit={formik.handleSubmit} className="mt-[30px] w-[700px]">
           <div>
             <div className="mt-[10px]">

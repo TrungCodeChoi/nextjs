@@ -11,7 +11,7 @@ function Page({}) {
     const fetchData = async () => {
       try {
         // get all data
-        const data = await axios.get(`http://20.2.70.141:5000/api/v1/products`);
+        const data = await axios.get(`https://www.warriorcode.online/api/v1/products`);
         setData(data?.data?.data);
       } catch (error) {
         console.log("Error fetching data:", error);
@@ -22,14 +22,27 @@ function Page({}) {
   const deleteProduct = async (productId: any) => {
     try {
       const response = await axios.delete(
-        `http://20.2.70.141:5000/api/v1/products/delete/${productId}`
+        `https://www.warriorcode.online/api/v1/products/delete/${productId}`
       );
-      setData((updateData: any) => updateData.filter((item: any) => item._id !== productId));
+      setData((updateData: any) =>
+        updateData.filter((item: any) => item._id !== productId)
+      );
     } catch (error) {
       console.error("Error deleting product:", error);
     }
-    
   };
+
+  const getOneProduct = async (productId: any) => {
+    try {
+      const response = await axios.get(
+        `https://www.warriorcode.online/api/v1/products/${productId}`
+      );
+      console.log(response);
+    } catch (error) {
+      console.error("Error updating product:", error);
+    }
+  };
+
   type DataType = any;
   const columns: TableProps<DataType>["columns"] = [
     {
@@ -87,8 +100,8 @@ function Page({}) {
       width: 100,
       render: (item) => (
         <div className="text-neutral-600">
-          <button className="mx-[10px]">
-            <Link href="/product-edit">Sửa</Link>
+          <button className="mx-[10px]" onClick={() => getOneProduct(item._id)}>
+            <Link href={`/product-edit/${item._id}`}>Sửa</Link>
           </button>
           <button onClick={() => deleteProduct(item._id)}>Xóa</button>
         </div>
